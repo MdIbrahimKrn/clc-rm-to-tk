@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <style type="text/css">
+    body main {
+    background-color: DodgerBlue;
+    height: 100vh;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size:20px;
+    }
+    * {
+    padding: 0;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    }
+    main #main {
+    width: 340px;
+    height: 240px;
+    padding: 15px;
+    border-radius: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    background-color: purple;
+    }
+    main #main > div {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    }
+    main #main input[type="text"],
+    main #main input[type="button"],
+    main #main input[type="reset"] {
+    width: 100%;
+    padding: 8px 8px;
+    border-radius: 5px;
+    border: 0;
+    outline: none;
+    font-size:18px;
+    }
+    
+    main #main #btn:active {
+    opacity: 0.8;
+    }
+    main #main .label {
+    display: inline-block;
+    width: 40%;
+    height: 100%;
+    text-align: center;
+    margin-left: 10px;
+    border-radius: 5px;
+    border-bottom: 0.5px solid rgba(17, 17, 17, 0.616);
+    outline: none;
+    color: #fff;
+    }
+    </style>
+  </head>
+  <body>
+    <main>
+      <form id="main">
+        <div>
+          <input
+            type="text"
+            autofocus
+            class="tk"
+            placeholder="Money Limite..."
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            required="required"
+            class="per"
+            placeholder="Enter percent"
+          />
+          <span class="label">
+            <label for="check"> % SUB</label>
+            <input
+              onchange="checkBox(this)"
+              style="margin-left: 5px"
+              type="checkbox"
+              name="check"
+              id="check"
+            />
+          </span>
+        </div>
+        <div>
+          <input
+            type="button"
+            onclick=" calculate()"
+            id="btn"
+            value="Click Here"
+          />
+          <input style="width: 30%" type="reset" id="btn" value="Reset" />
+        </div>
+        <div>
+          <input
+            disabled
+            style="text-align: center; color: #fff"
+            type="text"
+            id="result"
+            value="Result Here.."
+          />
+          <span class="label">
+            <label for="checkTK">RM</label>
+            <input
+              onchange="checkRate(this)"
+              style="margin-left: 5px"
+              type="checkbox"
+              name="check"
+              id="checkTK"
+            />
+          </span>
+        </div>
+      </form>
+    </main>
+    <script type="text/javascript">
+      let check = false;
+      let checkTk = false;
+      
+      function checkBox(e) {
+        check = e.checked;
+        if (check) {
+          e.previousElementSibling.innerText = "%ADD";
+        } else {
+          e.previousElementSibling.innerText = "%SUB";
+        }
+      }
+      
+      function checkRate(e) {
+        checkTk = e.checked;
+        if (checkTk) {
+          e.previousElementSibling.innerHTML =
+            "<input type='number' autofocus id='rate' placeholder='Rate' style='width:40px;font-size:18px;'/>";
+        } else {
+          e.previousElementSibling.innerText = "RM";
+        }
+      }
+      
+      function getPer(a, b) {
+        return (a * b) / 100;
+      }
+      
+      function calculate() {
+        let tk = eval(document.querySelector(".tk").value);
+        let per = eval(document.querySelector(".per").value);
+        let result = document.querySelector("#result");
+        let ans;
+
+        if (check) {
+          ans = (tk - getPer(tk, per - getPer(per, per))).toFixed(2);
+        } else {
+          ans = (getPer(tk, per) + tk).toFixed(2);
+        }
+        if (checkTk) {
+          let rate = Number(document.querySelector("#rate").value);
+          if(rate != 0){
+          	ans = (ans / rate).toFixed(2) + " RM";
+          }else{
+            alert("Rate fill required..");
+          }
+        } else {
+          ans = ans + " TK";
+        }
+        result.value = `Your result : ${ans}`;
+      }
+    </script>
+  </body>
+</html>
